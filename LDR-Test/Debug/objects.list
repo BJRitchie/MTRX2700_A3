@@ -1,0 +1,8 @@
+"./Src/adc.o"
+"./Src/gameplay.o"
+"./Src/led.o"
+"./Src/main.o"
+"./Src/syscalls.o"
+"./Src/sysmem.o"
+"./Src/timer.o"
+"./Startup/startup_stm32f303vctx.o"

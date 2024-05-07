@@ -1,0 +1,15 @@
+../Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	2
+../Inc/core_cm4.h:1816:22:__NVIC_SetPriority	2
+../Src/timer.c:50:6:TimerInitialise	1
+../Src/timer.c:78:6:TIM2_IRQHandler	4
+../Src/timer.c:95:6:TIM4_IRQHandler	4
+../Src/timer.c:114:6:enable_timer_interrupt	1
+../Src/timer.c:136:10:getPrescaleValue	1
+../Src/timer.c:144:6:setPrescaleValue	1
+../Src/timer.c:158:10:getARRValue	1
+../Src/timer.c:166:6:setARRValue	1
+../Src/timer.c:177:6:setPeriod	1
+../Src/timer.c:183:10:getPeriod	2
+../Src/timer.c:199:6:setCompletionFunc	1
+../Src/timer.c:204:6:setOneShotMode	1
+../Src/timer.c:215:6:setContinuousMode	1
