@@ -29,138 +29,28 @@
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-void (*ADC12_interrupt)(ADCxPort *ADC_port) = 0x00;
-void (*ADC3_interrupt)(ADCxPort *ADC_port) = 0x00;
-void (*TIM2_interrupt)(GameData *game_data1) = 0x00;
-void (*on_timer2_complete)(ADCxPort *ADC_port, GameData *game_data1) = 0x00;
 
 
-// enable the clocks for desired peripherals (GPIOA, C and E)
-void enable_clocks() {
-	RCC->AHBENR |= RCC_AHBENR_GPIOAEN | RCC_AHBENR_GPIOBEN | RCC_AHBENR_GPIOCEN | RCC_AHBENR_GPIOEEN;
-
-	// enable the clock for ADC1
-	RCC->AHBENR |= RCC_AHBENR_ADC12EN;
-	RCC->AHBENR |= RCC_AHBENR_ADC34EN;
-}
-
-// initialise the discovery board I/O (just outputs: inputs are selected by default)
-void initialise_board() {
-
-	// get a pointer to the second half word of the MODER register (for outputs pe8-15)
-	uint16_t *led_output_registers = ((uint16_t *)&(GPIOE->MODER)) + 1;
-	*led_output_registers = 0x5555;
-}
-
-void ADC1_2_IRQHandler() {
-	if (ADC12_interrupt != 0x00) {
-		ADC12_interrupt(&ADC2_Port);
-	}
-}
-
-void ADC3_IRQHandler() {
-	if (ADC3_interrupt != 0x00) {
-		ADC3_interrupt(&ADC3_Port);
-	}
-}
-
-void (*on_button_press)() = 0x00;
-
-void EXTI0_IRQHandler(void) {
-	// run the button press handler (make sure it is not null first !)
-	if (on_button_press != 0x00) {
-		on_button_press();
-	}
-
-	// reset the interrupt (so it doesn't keep firing until the next trigger)
-	EXTI->PR |= EXTI_PR_PR0;
-}
-
-void EnableEXTIInterrupt() {
-	// Disable the interrupts while messing around with the settings
-	//  otherwise can lead to strange behaviour
-	__disable_irq();
-
-	// Enable the system configuration controller (SYSCFG in RCC)
-	RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN;
-
-	// External Interrupts details on large manual page 294)
-	// PA0 is on interrupt EXTI0 large manual - page 250
-	// EXTI0 in  SYSCFG_EXTICR1 needs to be 0x00 (SYSCFG_EXTICR1_EXTI0_PA)
-	SYSCFG->EXTICR[0] = SYSCFG_EXTICR1_EXTI0_PA;
-
-	//  Select EXTI0 interrupt on rising edge
-	EXTI->RTSR |= EXTI_RTSR_TR0; // rising edge of EXTI line 0 (includes PA0)
-
-	// set the interrupt from EXTI line 0 as 'not masked' - as in, enable it.
-	EXTI->IMR |= EXTI_IMR_MR0;
-
-	// Tell the NVIC module that EXTI0 interrupts should be handled
-	NVIC_SetPriority(EXTI0_IRQn, 1);  // Set Priority
-	NVIC_EnableIRQ(EXTI0_IRQn);
-
-	// Re-enable all interrupts (now that we are finished)
-	__enable_irq();
-}
-
-void Timer2CompletionFunction() {
-	if (game_data1.GamePhaseValue == 1) {
-		if (on_timer2_complete != 0x00) {
-			on_timer2_complete(&ADC3_Port, &game_data1);
-		}
-	}
-	else if (game_data1.GamePhaseValue == 2) {
-		on_timer2_complete = &GameTimer;
-		if (on_timer2_complete != 0x00) {
-			on_timer2_complete(&ADC3_Port, &game_data1);
-		}
-	}
-	else if (game_data1.GamePhaseValue == 3) {
-
-		if (on_timer2_complete != 0x00) {
-			on_timer2_complete(&ADC2_Port, &game_data1);
-		}
-	}
-
-}
 
 int main(void)
 {
-	enable_clocks();
-	initialise_board();
-
-	on_button_press = &spin_leds;
-	EnableEXTIInterrupt();
-	enable_timer_interrupt();
 
 
+
+	Phase1();
 
 	// check if the button is pressed, determine which mode
 	//  to enter.
+	/*
 	if ((GPIOA->IDR & 0x01) == 0){
 		//SingleReadMultiChannelADC2();
-
-
-		ADC12_interrupt = &SingleReadMultiChannelADCInterrupt;
-		ADC3_interrupt = &SingleReadMultiChannelADCInterrupt;
-		//enable_ADC12_interrupt();
-		enable_ADC3_interrupt();
-		toggle_EOC_interrupt(&ADC3_Port);
-		toggle_ADRDY_interrupt(&ADC3_Port);
-		toggle_EOS_interrupt(&ADC3_Port);
-
-		on_timer2_complete = &spin_and_count_leds;
-		uint32_t period = 1000; // ms
-		TimerInitialise(&TIM2_init, period, &Timer2CompletionFunction);
-		ADCInitialise(&ADC3_Port);
-
 
 
 	}
 	else{
 		ContinuousReadSingleChannel(&ADC3_Port);
 
-	}
+	}*/
 
 	for(;;);
 }

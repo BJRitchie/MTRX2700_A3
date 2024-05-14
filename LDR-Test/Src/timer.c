@@ -115,11 +115,11 @@ void enable_timer_interrupt() {
     // disable interrupts
 	__disable_irq();
 
-	NVIC_SetPriority(TIM2_IRQn, 1); // Set priority
+	NVIC_SetPriority(TIM2_IRQn, 3); // Set priority
     NVIC_EnableIRQ(TIM2_IRQn); 		// Enable TIM2 IRQ
 
-	NVIC_SetPriority(TIM4_IRQn, 1); // Set priority
-    NVIC_EnableIRQ(TIM4_IRQn); 		// Enable TIM2 IRQ
+	NVIC_SetPriority(TIM4_IRQn, 2); // Set priority
+    NVIC_EnableIRQ(TIM4_IRQn); 		// Enable TIM4 IRQ
 
     // re-enable interrupts
     __enable_irq();

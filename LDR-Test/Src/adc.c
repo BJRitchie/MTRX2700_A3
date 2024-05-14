@@ -616,14 +616,14 @@ int conversion_counter = 0;
 
 void enable_ADC12_interrupt() {
 	__disable_irq();
-	NVIC_SetPriority(ADC1_2_IRQn, 3);  // Set Priority
+	NVIC_SetPriority(ADC1_2_IRQn, 5);  // Set Priority
 	NVIC_EnableIRQ(ADC1_2_IRQn);
 	__enable_irq();
 }
 
 void enable_ADC3_interrupt() {
 	__disable_irq();
-	NVIC_SetPriority(ADC3_IRQn, 2);  // Set Priority
+	NVIC_SetPriority(ADC3_IRQn, 4);  // Set Priority
 	NVIC_EnableIRQ(ADC3_IRQn);
 	__enable_irq();
 }
