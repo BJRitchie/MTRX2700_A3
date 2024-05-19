@@ -1,0 +1,5 @@
+../Core/Src/serial.c:54:6:enable_clocks	1
+../Core/Src/serial.c:62:6:initialise_board	1
+../Core/Src/serial.c:73:6:SerialInitialise	7
+../Core/Src/serial.c:132:6:SerialOutputChar	2
+../Core/Src/serial.c:141:6:SerialOutputString	3

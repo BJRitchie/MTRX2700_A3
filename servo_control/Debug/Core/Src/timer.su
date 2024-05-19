@@ -1,0 +1,14 @@
+../Drivers/CMSIS/Include/core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+../Core/Src/timer.c:50:6:TimerInitialise	16	static
+../Core/Src/timer.c:76:6:TIM2_IRQHandler	8	static
+../Core/Src/timer.c:94:6:TIM4_IRQHandler	8	static
+../Core/Src/timer.c:113:6:enable_timer_interrupt	8	static,ignoring_inline_asm
+../Core/Src/timer.c:135:10:getPrescaleValue	16	static
+../Core/Src/timer.c:143:6:setPrescaleValue	16	static
+../Core/Src/timer.c:157:10:getARRValue	16	static
+../Core/Src/timer.c:165:6:setARRValue	16	static
+../Core/Src/timer.c:177:6:setPeriod	16	static
+../Core/Src/timer.c:183:10:getPeriod	32	static
+../Core/Src/timer.c:207:6:setCompletionFunc	16	static
+../Core/Src/timer.c:212:6:set_one_shot_mode	24	static
+../Core/Src/timer.c:225:6:set_continuous_mode	24	static
