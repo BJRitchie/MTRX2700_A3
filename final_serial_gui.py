@@ -3,7 +3,7 @@ import time
 import serial
 import threading
 
-SERIAL_PORT = 'COM6'  
+SERIAL_PORT = 'COM4'  
 BAUD_RATE = 115200
 
 class TimerApp:
