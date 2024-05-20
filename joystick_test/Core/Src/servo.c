@@ -251,55 +251,55 @@ uint32_t pid_velocity_controller_inner(Servo* servo) {
 	return arr;
 }
 
-void update_position_values(Servo* servo, uint32_t axis) {
-	float gyro_values[3];
-	float new_arr[3];
+//void update_position_values(Servo* servo, uint32_t axis) {
+//	float gyro_values[3];
+//	float new_arr[3];
+//
+//	// get the current gyro values
+//	BSP_GYRO_GetXYZ(&gyro_values[0]);
+//	float new_value = gyro_values[axis]/20000;
+//
+//	// shift in the new value
+//	float* old_arr = servo->position;
+//	shift_array(old_arr, 3, new_arr, new_value);
+//
+//	servo->position[0] = new_arr[0];
+//	servo->position[1] = new_arr[1];
+//	servo->position[2] = new_arr[2];
+//
+//}
+//
+//void update_velocity_values(Servo* servo, uint32_t axis) {
+//	float gyro_values[3];
+//	float new_position[3];
+//	float old_pos_avg;
+//	float new_pos_avg;
+//
+//	// calc time difference
+//	// clock frequency is 48MHz
+//	uint32_t loop_time = servo->loop_time;
+//	uint32_t psc = getPrescaleValue(servo->TIMx_init);
+//	float freq = CLOCK_FREQ/psc;
+//	float delay = (float)(loop_time)/freq;
+//
+//	// determine current position
+//	float* prev_position = servo->position;
+//	old_pos_avg = average(prev_position, 3);
+//
+//	BSP_GYRO_GetXYZ(&gyro_values[0]);
+//	shift_array(prev_position, 3, new_position, gyro_values[axis]);
+//	new_pos_avg = average(new_position, 3);
+//
+//	// calc velocity
+//	float velocity = (new_pos_avg - old_pos_avg)/delay;
+//
+//	servo->velocity = velocity;
+//
+//	servo->position[0] = new_position[0];
+//	servo->position[1] = new_position[1];
+//	servo->position[2] = new_position[2];
 
-	// get the current gyro values
-	BSP_GYRO_GetXYZ(&gyro_values[0]);
-	float new_value = gyro_values[axis]/20000;
-
-	// shift in the new value
-	float* old_arr = servo->position;
-	shift_array(old_arr, 3, new_arr, new_value);
-
-	servo->position[0] = new_arr[0];
-	servo->position[1] = new_arr[1];
-	servo->position[2] = new_arr[2];
-
-}
-
-void update_velocity_values(Servo* servo, uint32_t axis) {
-	float gyro_values[3];
-	float new_position[3];
-	float old_pos_avg;
-	float new_pos_avg;
-
-	// calc time difference
-	// clock frequency is 48MHz
-	uint32_t loop_time = servo->loop_time;
-	uint32_t psc = getPrescaleValue(servo->TIMx_init);
-	float freq = CLOCK_FREQ/psc;
-	float delay = (float)(loop_time)/freq;
-
-	// determine current position
-	float* prev_position = servo->position;
-	old_pos_avg = average(prev_position, 3);
-
-	BSP_GYRO_GetXYZ(&gyro_values[0]);
-	shift_array(prev_position, 3, new_position, gyro_values[axis]);
-	new_pos_avg = average(new_position, 3);
-
-	// calc velocity
-	float velocity = (new_pos_avg - old_pos_avg)/delay;
-
-	servo->velocity = velocity;
-
-	servo->position[0] = new_position[0];
-	servo->position[1] = new_position[1];
-	servo->position[2] = new_position[2];
-
-}
+//}
 
 void PIDVelocityController1() {
 	// PID controller for the velocity of servo 1

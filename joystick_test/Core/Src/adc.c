@@ -86,9 +86,16 @@ void SingleReadMultiChannelADC() {
 	ADC1->CR |= ADC_CR_ADVREGEN_0; // set ADVREGEN TO 01
 	ADC1->CR &= ~ADC_CR_ADCALDIF; // clear bit to enable Single-ended-input
 
+	ADC2->CR &= ~ADC_CR_ADVREGEN; // clear voltage regulator enable
+	ADC2->CR |= ADC_CR_ADVREGEN_0; // set ADVREGEN TO 01
+	ADC2->CR &= ~ADC_CR_ADCALDIF; // clear bit to enable Single-ended-input
+
 	// calibrate the ADC (self calibration routine)
 	ADC1->CR |= ADC_CR_ADCAL;
 	while((ADC1->CR & ADC_CR_ADCAL) == ADC_CR_ADCAL); // Waiting for the calibration to finish
+
+	ADC2->CR |= ADC_CR_ADCAL;
+	while((ADC2->CR & ADC_CR_ADCAL) == ADC_CR_ADCAL); // Waiting for the calibration to finish
 
 	// We want to read from two channels each sequence
 	//  the first channel goes in SQ1
@@ -99,6 +106,11 @@ void SingleReadMultiChannelADC() {
 	ADC1->SQR1 |= 0x03 << ADC_SQR1_SQ2_Pos; // set the request for channel 3
 	ADC1->SQR1 |= 0x01 << ADC_SQR1_L_Pos; // set the number of channels to read
 
+	ADC2->SQR1 = 0;
+	ADC2->SQR1 |= 0x02 << ADC_SQR1_SQ1_Pos; // set the request for channel 2
+	ADC2->SQR1 |= 0x03 << ADC_SQR1_SQ2_Pos; // set the request for channel 3
+	ADC2->SQR1 |= 0x01 << ADC_SQR1_L_Pos; // set the number of channels to read
+
 	// single shot mode
 	ADC1->CFGR &= ~ADC_CFGR_CONT;
 
@@ -107,6 +119,14 @@ void SingleReadMultiChannelADC() {
 
 	// Wait the ADC to be ready.
 	while (ADC1->ISR == 0);
+
+	ADC2->CFGR &= ~ADC_CFGR_CONT;
+
+	// Enable the ADC
+	ADC2->CR |= ADC_CR_ADEN;
+
+	// Wait the ADC to be ready.
+	while (ADC2->ISR == 0);
 
 	uint16_t value_1 = 0;
 	uint16_t value_2 = 0;
@@ -127,10 +147,13 @@ void SingleReadMultiChannelADC() {
 		// Map this range to 0-1000
 		uint16_t mapped_value_1 = (1000.0 / (4150.0- 1950.0)) * (value_1 - 1950.0);
 
-//		while(!(ADC1->ISR & ADC_ISR_EOC));
+		ADC2->CR |= ADC_CR_ADSTART;
+
+		// Wait for the end of the first conversion
+		while(!(ADC2->ISR & ADC_ISR_EOC));
 
 		// read the second value
-		value_2 = ADC1->DR;
+		value_2 = ADC2->DR;
 		// Max forward: 2410
 		// Max back: 3390
 		// Map this range to 0-1000
@@ -145,12 +168,13 @@ void SingleReadMultiChannelADC() {
 
 		// reset the sequence flag
 		ADC1->ISR |= ADC_ISR_EOS;
+		ADC2->ISR |= ADC_ISR_EOS;
 
 		sendToServos();
 
 //		// Printing values to screen for use
 //		uint8_t string_to_send[100];
-//		sprintf(string_to_send, "X: %u		Y: %u\r\n", mapped_value_1, mapped_value_2);
+//		sprintf(string_to_send, "X: %u		Y: %u\r\n", value_1, value_2);
 //
 //		SerialOutputString(string_to_send, &USART1_PORT);
 
@@ -161,11 +185,107 @@ void SingleReadMultiChannelADC() {
 	}
 }
 
+void ContinuousReadSingleChannelADC() {
+
+	// get a pointer to the location of the LEDs
+	uint8_t *led_register = ((uint8_t*)&(GPIOE->ODR)) + 1;
+
+	// enable the clock for ADC1
+	RCC->AHBENR |= RCC_AHBENR_ADC12EN;
+
+	// set to synchronise the ADC with the clock
+	ADC12_COMMON->CCR |= ADC12_CCR_CKMODE_0;
+
+	// ADEN must be = 0 for configuration (is the default)
+	ADC1->CR &= ~ADC_CR_ADVREGEN; // clear voltage regulator enable
+	ADC1->CR |= ADC_CR_ADVREGEN_0; // set ADVREGEN TO 01
+	ADC1->CR &= ~ADC_CR_ADCALDIF; // clear bit to enable Single-ended-input
+
+	// calibrate the ADC (self calibration routine)
+	ADC1->CR |= ADC_CR_ADCAL;
+	while((ADC1->CR & ADC_CR_ADCAL) == ADC_CR_ADCAL); // Waiting for the calibration to finish
+
+	// select the channel, only one conversion so it goes in
+	//  the first conversion slot (SQ1)
+	//  and the L value should be 0 (L=0000 does one conversion only)
+	ADC1->SQR1 = 0; // clear any existing channel requests
+	ADC1->SQR1 |= 0x02 << ADC_SQR1_SQ1_Pos; // request channel 2
+	ADC1->SQR1 |= 0x00 << ADC_SQR1_L_Pos; // set the number of channels to read
+
+	// continuous mode
+	ADC1->CFGR |= ADC_CFGR_CONT;
+
+	// Enable ADC
+	ADC1->CR |= ADC_CR_ADEN;
+
+	while (ADC1->ISR == 0); //Wait the ADC to be ready.
+
+	// request the process to start
+	// only need once in continuous mode
+	ADC1->CR |= ADC_CR_ADSTART;
+
+	ADC2->CR &= ~ADC_CR_ADVREGEN; // clear voltage regulator enable
+	ADC2->CR |= ADC_CR_ADVREGEN_0; // set ADVREGEN TO 01
+	ADC2->CR &= ~ADC_CR_ADCALDIF; // clear bit to enable Single-ended-input
+
+	// calibrate the ADC (self calibration routine)
+	ADC2->CR |= ADC_CR_ADCAL;
+	while((ADC2->CR & ADC_CR_ADCAL) == ADC_CR_ADCAL); // Waiting for the calibration to finish
+
+	// select the channel, only one conversion so it goes in
+	//  the first conversion slot (SQ1)
+	//  and the L value should be 0 (L=0000 does one conversion only)
+	ADC2->SQR1 = 0; // clear any existing channel requests
+	ADC2->SQR1 |= 0x02 << ADC_SQR1_SQ1_Pos; // request channel 2
+	ADC2->SQR1 |= 0x00 << ADC_SQR1_L_Pos; // set the number of channels to read
+
+	// continuous mode
+	ADC2->CFGR |= ADC_CFGR_CONT;
+
+	// Enable ADC
+	ADC2->CR |= ADC_CR_ADEN;
+
+	while (ADC2->ISR == 0); //Wait the ADC to be ready.
+
+	// request the process to start
+	// only need once in continuous mode
+	ADC2->CR |= ADC_CR_ADSTART;
+
+	uint16_t value_1 = 0;
+	uint16_t value_2 = 0;
+
+    /* Loop forever */
+	for(;;) {
+
+		// Wait for the end of conversion
+		while(!(ADC1->ISR &= ADC_ISR_EOC));
+		value_1 = ADC1->DR;
+
+		while(!(ADC2->ISR &= ADC_ISR_EOC));
+		value_2 = ADC2->DR;
+
+		uint16_t mapped_value_1 = (1000.0 / (4150.0- 1950.0)) * (value_1 - 1950.0);
+
+		uint16_t mapped_value_2 = (1000.0 / (3900.0- 2200.0)) * (value_2 - 2200.0);
+		mapped_value_2 = 1000 - mapped_value_2;
+		if (mapped_value_2 > 1000) {
+			mapped_value_2 = 0;
+		}
+
+		x_coordinate = mapped_value_1;
+		y_coordinate = mapped_value_2;
+
+		sendToServos();
+
+	}
+}
+
+
 int setup_adc(void) {
 	enable_clocks();
 	initialise_board();
 //	SerialInitialise(BAUD_115200, &USART1_PORT, &finished_transmission);
-	SingleReadMultiChannelADC();
+	ContinuousReadSingleChannelADC();
 }
 
 void sendToServos() {
@@ -176,8 +296,8 @@ void sendToServos() {
 	float y_pos = (float)(y_coordinate)/1000;
 
 	// send axis 1 to position
-	servoGoToFractionalPosition(&Servo1, y_pos);
-	servoGoToFractionalPosition(&Servo2, 1-y_pos);  // inverse
+	servoGoToFractionalPosition(&Servo1, x_pos);
+	servoGoToFractionalPosition(&Servo2, 1-x_pos);  // inverse
 
 	// send axis 2 to position
 	servoGoToFractionalPosition(&Servo3, y_pos);

@@ -45,6 +45,11 @@ extern ADCxPort ADC3_Port;
 
 uint16_t ReadADC(uint32_t channel);
 
+struct joystick_position {
+	uint16_t x_coordinate;
+	uint16_t y_coordinate;
+};
+
 void ContinuousReadSingleChannel(ADCxPort *ADC_port);
 
 void ContinuousReadSingleChannelADC2();
@@ -74,6 +79,8 @@ void toggle_EOS_interrupt(ADCxPort *ADC_port);
 void ADCInitialise(ADCxPort *ADC_port);
 
 void SingleReadMultiChannelADCInterrupt(ADCxPort *ADC_port);
+
+struct joystick_position get_position(void);
 
 #endif
 

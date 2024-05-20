@@ -22,13 +22,17 @@
 #include <stdio.h>
 #include "serial.h"
 
+uint16_t x_coordinate;
+uint16_t y_coordinate;
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-uint16_t x_coordinate = 0;
-uint16_t y_coordinate = 0;
+struct joystick_position {
+	uint16_t x_coordinate;
+	uint16_t y_coordinate;
+};
 
 
 // enable the clocks for desired peripherals (GPIOA, C and E)
@@ -112,59 +116,145 @@ void SingleReadMultiChannelADC() {
 	uint16_t value_2 = 0;
 
     /* Loop forever */
-	for(;;) {
+//	for(;;) {
 
 		// request the process to start
-		ADC1->CR |= ADC_CR_ADSTART;
-
-		// Wait for the end of the first conversion
-		while(!(ADC1->ISR & ADC_ISR_EOC));
-
-		// read the first value
-		value_1 = ADC1->DR;
-		// Max left: 1980
-		// Max right: 4096
-		// Map this range to 0-1000
-		uint16_t mapped_value_1 = (1000.0 / (4150.0- 1950.0)) * (value_1 - 1950.0);
-
-		while(!(ADC1->ISR & ADC_ISR_EOC));
-
-		// read the second value
-		value_2 = ADC1->DR;
-		// Max forward: 2410
-		// Max back: 3390
-		// Map this range to 0-1000
-		uint16_t mapped_value_2 = (1000.0 / (3900.0- 2200.0)) * (value_2 - 2200.0);
-		mapped_value_2 = 1000 - mapped_value_2;
-		if (mapped_value_2 > 1000) {
-			mapped_value_2 = 0;
-		}
-
-		x_coordinate = mapped_value_1;
-		y_coordinate = mapped_value_2;
-
-		// reset the sequence flag
-		ADC1->ISR |= ADC_ISR_EOS;
-
-
-		// Printing values to screen for use
-		uint8_t string_to_send[100];
-		sprintf(string_to_send, "X: %u		Y: %u\r\n", mapped_value_1, mapped_value_2);
-
-		SerialOutputString(string_to_send, &USART1_PORT);
-
-//		uint8_t string_to_send2[100];
-//		sprintf(string_to_send2, "Y: %d\r", value_2);
+//		ADC1->CR |= ADC_CR_ADSTART;
 //
-//		SerialOutputString(string_to_send2, &USART1_PORT);
-	}
+//		// Wait for the end of the first conversion
+//		while(!(ADC1->ISR & ADC_ISR_EOC));
+//
+//		// read the first value
+//		value_1 = ADC1->DR;
+//		// Max left: 1980
+//		// Max right: 4096
+//		// Map this range to 0-1000
+//		uint16_t mapped_value_1 = (1000.0 / (4150.0- 1950.0)) * (value_1 - 1950.0);
+//
+//		while(!(ADC1->ISR & ADC_ISR_EOC));
+//
+//		// read the second value
+//		value_2 = ADC1->DR;
+//		// Max forward: 2410
+//		// Max back: 3390
+//		// Map this range to 0-1000
+//		uint16_t mapped_value_2 = (1000.0 / (3900.0- 2200.0)) * (value_2 - 2200.0);
+//		mapped_value_2 = 1000 - mapped_value_2;
+//		if (mapped_value_2 > 1000) {
+//			mapped_value_2 = 0;
+//		}
+//
+//		x_coordinate = mapped_value_1;
+//		y_coordinate = mapped_value_2;
+//
+//		// reset the sequence flag
+//		ADC1->ISR |= ADC_ISR_EOS;
+//
+//
+//		// Printing values to screen for use
+//		uint8_t string_to_send[100];
+//		sprintf(string_to_send, "Testing X: %u		Y: %u\r\n", x_coordinate, y_coordinate);
+//
+//		SerialOutputString(string_to_send, &USART1_PORT);
+//	}
 }
 
-int setup_adc(void) {
+struct joystick_position get_position(void) {
+	uint16_t value_1 = 0;
+	uint16_t value_2 = 0;
+
+	ADC1->CR |= ADC_CR_ADSTART;
+
+			// Wait for the end of the first conversion
+	while(!(ADC1->ISR & ADC_ISR_EOC));
+			// read the first value
+	value_1 = ADC1->DR;
+			// Max left: 1980
+			// Max right: 4096
+			// Map this range to 0-1000
+
+	while(!(ADC1->ISR & ADC_ISR_EOC));
+	value_2 = ADC1->DR;
+
+	ADC1->ISR |= ADC_ISR_EOS;
+
+
+	uint16_t mapped_value_1 = (1000.0 / (4150.0- 1950.0)) * (value_1 - 1950.0);
+
+//	while(!(ADC1->ISR & ADC_ISR_EOC));
+
+			// read the second value
+//	value_2 = ADC1->DR;
+			// Max forward: 2410
+			// Max back: 3390
+			// Map this range to 0-1000
+	uint16_t mapped_value_2 = (1000.0 / (3900.0- 2200.0)) * (value_2 - 2200.0);
+	mapped_value_2 = 1000 - mapped_value_2;
+	if (mapped_value_2 > 1000) {
+		mapped_value_2 = 0;
+	}
+
+	uint16_t x_coordinate = mapped_value_1;
+	uint16_t y_coordinate = mapped_value_2;
+
+			// reset the sequence flag
+	struct joystick_position current_pos = {x_coordinate, y_coordinate};
+	return current_pos;
+}
+
+
+void setup_adc(void) {
 	enable_clocks();
 	initialise_board();
 	SerialInitialise(BAUD_115200, &USART1_PORT, &finished_transmission);
 	SingleReadMultiChannelADC();
+	for(;;) {
+		uint16_t value_1 = 0;
+			uint16_t value_2 = 0;
+
+			ADC1->CR |= ADC_CR_ADSTART;
+
+					// Wait for the end of the first conversion
+			while(!(ADC1->ISR & ADC_ISR_EOC));
+					// read the first value
+			value_1 = ADC1->DR;
+					// Max left: 1980
+					// Max right: 4096
+					// Map this range to 0-1000
+
+			while(!(ADC1->ISR & ADC_ISR_EOC));
+			value_2 = ADC1->DR;
+
+			ADC1->ISR |= ADC_ISR_EOS;
+
+
+			uint16_t mapped_value_1 = (1000.0 / (4100.0- 3250.0)) * (value_1 - 3250.0);
+			mapped_value_1 = 1000 - mapped_value_1;
+			if (mapped_value_1 > 1000) {
+				mapped_value_1 = 0;
+			}
+		//	while(!(ADC1->ISR & ADC_ISR_EOC));
+
+					// read the second value
+		//	value_2 = ADC1->DR;
+					// Max forward: 2410
+					// Max back: 3390
+					// Map this range to 0-1000
+			uint16_t mapped_value_2 = (1000.0 / (3950.0- 2250.0)) * (value_2 - 2250.0);
+			mapped_value_2 = 1000 - mapped_value_2;
+			if (mapped_value_2 > 1000) {
+				mapped_value_2 = 0;
+			}
+
+			uint16_t x_coordinate = mapped_value_1;
+			uint16_t y_coordinate = mapped_value_2;
+
+					// reset the sequence flag
+			struct joystick_position current_pos = {x_coordinate, y_coordinate};
+//		uint8_t string_to_send[100];
+//		sprintf(string_to_send, "Testing X: %u		Y: %u\r\n", value_1, value_2);
+//		SerialOutputString(string_to_send, &USART1_PORT);
+	}
 }
 
 

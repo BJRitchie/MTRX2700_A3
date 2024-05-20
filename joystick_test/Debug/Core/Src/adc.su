@@ -3,5 +3,6 @@
 ../Core/Src/adc.c:48:10:ReadADC	16	static
 ../Core/Src/adc.c:63:6:finished_transmission	16	static
 ../Core/Src/adc.c:73:6:SingleReadMultiChannelADC	24	static
-../Core/Src/adc.c:164:5:setup_adc	8	static
-../Core/Src/adc.c:171:6:sendToServos	16	static
+../Core/Src/adc.c:188:6:ContinuousReadSingleChannelADC	24	static
+../Core/Src/adc.c:284:5:setup_adc	8	static
+../Core/Src/adc.c:291:6:sendToServos	16	static

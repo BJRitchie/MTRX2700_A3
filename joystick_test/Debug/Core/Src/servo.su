@@ -10,6 +10,4 @@
 ../Core/Src/servo.c:207:6:setServoTarget	16	static
 ../Core/Src/servo.c:211:6:setTargetVelocity	16	static
 ../Core/Src/servo.c:217:10:pid_velocity_controller_inner	64	static
-../Core/Src/servo.c:254:6:update_position_values	48	static
-../Core/Src/servo.c:272:6:update_velocity_values	72	static
 ../Core/Src/servo.c:304:6:PIDVelocityController1	16	static
