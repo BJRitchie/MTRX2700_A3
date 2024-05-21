@@ -87,6 +87,16 @@ The GUI is generated using python code to display a timer when the game starts, 
 The GUI code must be run on a valid python coding platform that has the capability to generate a GUI pop-up application (such as VSCode).
 ### Functions and modularity
 The timer will be idle until it receives a specific packet over serial indicating the game has started - this occurs when the maze ball sits in the starting position for three seconds. The timer will continue to run until all of the checkpoints are reached. Once all the checkpoints are reached, a packet will be sent over serial indicating the game has ended. The timer will stop, reset to zero and sit idle until the game is started again. Additionally, if the total time taken to complete the game is in the top 5 quickest, it will be added to the games leaderboard. 
+#### Serial
+The python module "pyserial" is installed onto the device and imported into the code to access serial. The serial packet is sent from the STM32F3Discovery board and interpretted by the python code.
+#### tkinter
+The python module "tkinter" is installed onto the device and imported into the code to generate the GUI. Within the GUI, there is a leaderboard, timer display, and username input request. 
+#### Timer 
+The python module "time" is imported to run the count.
+#### Soundtrack
+The python module "pygame" is installed onto the device and imported into the code to play music.
+
+
 
 ### Testing
 
