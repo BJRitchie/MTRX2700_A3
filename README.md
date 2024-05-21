@@ -99,7 +99,8 @@ The python module "pygame" is installed onto the device and imported into the co
 ### Testing
 - When inputting a name, the word length cannot exceed 20 characters. If it does exceed 20 characters, a warning message is displayed which requests a shorter username.
 - A manual message can be sent over serial from the STM32F3Discovery board using the SerialOutputString function instead of using the LDR module to test the functionality of the checkpoints, soundtrack and sound effects, post-game username request and leaderboard. This is useful for when the LDR module is not available for use.
-
+- If the game length exceeds the length of the music, the music will repeat to maintain game immersion
+- To ensure clarity, once a checkpoint has been reached, it cannot be triggered again during the game instance. This means the sound effect will not be re-played in the circumstance where the marble moves past the checkpoint again. 
 
 
 
