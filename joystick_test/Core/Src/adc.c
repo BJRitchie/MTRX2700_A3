@@ -264,7 +264,7 @@ void ContinuousReadSingleChannelADC() {
 		while(!(ADC2->ISR &= ADC_ISR_EOC));
 		value_2 = ADC2->DR;
 
-		uint16_t mapped_value_1 = (1000.0 / (4150.0- 1950.0)) * (value_1 - 1950.0);
+		uint16_t mapped_value_1 = (1000.0 / (3650.0- 2800.0)) * (value_1 - 2800.0);
 
 		uint16_t mapped_value_2 = (1000.0 / (3900.0- 2200.0)) * (value_2 - 2200.0);
 		mapped_value_2 = 1000 - mapped_value_2;
@@ -295,11 +295,19 @@ void sendToServos() {
 	float x_pos = (float)(x_coordinate)/1000;
 	float y_pos = (float)(y_coordinate)/1000;
 
+	float x_pos_invert = 1-x_pos + 0.15;
+	if (x_pos_invert > 1) {
+		x_pos_invert = (float) 1.0;
+	}
+	else if (x_pos_invert < 0) {
+		x_pos_invert = (float) 0.0;
+	}
+
 	// send axis 1 to position
-	servoGoToFractionalPosition(&Servo1, x_pos);
-	servoGoToFractionalPosition(&Servo2, 1-x_pos);  // inverse
+	servoGoToFractionalPosition(&Servo1, x_pos + 0.1);
+	servoGoToFractionalPosition(&Servo2, x_pos_invert - 0.1);  // inverse
 
 	// send axis 2 to position
-	servoGoToFractionalPosition(&Servo3, y_pos);
+	servoGoToFractionalPosition(&Servo3, y_pos-0.1);
 	servoGoToFractionalPosition(&Servo4, 1-y_pos);  // inverse
 }

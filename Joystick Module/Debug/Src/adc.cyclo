@@ -1,7 +1,7 @@
-../Src/adc.c:39:6:enable_clocks	1
-../Src/adc.c:44:6:initialise_board	1
-../Src/adc.c:52:10:ReadADC	2
-../Src/adc.c:67:6:finished_transmission	1
-../Src/adc.c:77:6:SingleReadMultiChannelADC	3
-../Src/adc.c:162:26:get_position	4
-../Src/adc.c:206:6:setup_adc	5
+../Src/adc.c:34:6:enable_clocks	1
+../Src/adc.c:39:6:initialise_board	1
+../Src/adc.c:47:10:ReadADC	2
+../Src/adc.c:62:6:finished_transmission	1
+../Src/adc.c:72:6:SingleReadMultiChannelADC	8
+../Src/adc.c:187:6:ContinuousReadSingleChannelADC	8
+../Src/adc.c:287:5:setup_adc	1

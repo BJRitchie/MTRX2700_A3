@@ -5,4 +5,4 @@
 ../Core/Src/adc.c:73:6:SingleReadMultiChannelADC	8
 ../Core/Src/adc.c:188:6:ContinuousReadSingleChannelADC	8
 ../Core/Src/adc.c:284:5:setup_adc	1
-../Core/Src/adc.c:291:6:sendToServos	1
+../Core/Src/adc.c:291:6:sendToServos	3
