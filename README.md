@@ -82,7 +82,7 @@ Sorted data from other modules should be inputted into the SerialOutputString fu
 ### Summary
 The GUI is generated using python code to display a timer when the game starts, and employs a leaderboard to track the quickest times. 
 ### Usage
-The GUI module aims to replicate the quality features of a real arcade game. This module is essential in transforming the design from a casual design into a competitive game with various interactive and engaging features. Implementing a timer with an associated leaderboard, music and checkpoint indicators changes the games usage to being a quantifiable race.  
+The GUI module aims to replicate the quality features of a real arcade game. This module is essential in transforming the design from a casual toy into a competitive game with various interactive and engaging features. Implementing a timer with an associated leaderboard, music and checkpoint indicators changes the games usage to being a quantifiable race.  
 ### Valid input
 The GUI code must be run on a valid python coding platform that has the capability to generate a GUI pop-up application (such as VSCode).
 ### Functions and modularity
