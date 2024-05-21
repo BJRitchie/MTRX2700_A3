@@ -78,6 +78,7 @@ Sorted data from other modules should be inputted into the SerialOutputString fu
 
 
 ## GUI Timer Module 
+![maze](https://github.com/BJRitchie/MTRX2700_A3/assets/160685205/1296d150-01d7-41fa-b2f5-6e0b3bebf2db)
 ### Summary
 The GUI is generated using python code to display a timer when the game starts, and employs a leaderboard to track the quickest times. 
 ### Usage
