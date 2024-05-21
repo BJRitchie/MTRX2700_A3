@@ -27,7 +27,7 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 - Minutes documentation
 
 ## Module Breakdown
-![Modularisation](MTRX2700_A3/Board 1 Python/Inc/functionality.png)
+![Modularisation](Board 1 Python/Inc/functionality.png)
 ## Serial Communication Module
 ### Summary
 Serial communication is the foundation of all the modules, allowing the modules to communicate with one another to achieve modularisation in the maze game. 
