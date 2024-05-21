@@ -19,7 +19,6 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 
 ### Sebastian O'Connell
 - LDR, GUI, and Serial Modules
-- Minutes documentation
 - Presentation slides
 
 ### Ben Ritchie
