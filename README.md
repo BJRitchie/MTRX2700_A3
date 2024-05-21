@@ -11,6 +11,7 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 ## Roles & Responsibilities
 ### Will Ridley-Smith
 - Joystick Module
+- Servo/Joystick integration 
 - 3D printing
 
 ### Luca Agius
@@ -23,7 +24,9 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 - Minutes documentation
 
 ### Ben Ritchie
+- CAD design of gimbaling system 
 - Servo Module
+- Servo/Joystick integration
 - Minutes documentation
 
 ## Module Breakdown
@@ -32,7 +35,7 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 ### Summary
 Serial communication is the foundation of all the modules, allowing the modules to communicate with one another to achieve modularisation in the maze game. 
 ### Usage
-Each of the ensuing modules employ the serial module to transmit their relevant data such that the modules work together correctly. Using an interrupt based approach, all modules can function simultaneously, allowing for the game to be function smoothly. 
+Each of the ensuing modules employ the serial module to transmit their relevant data such that the modules work together correctly. Using an interrupt based approach, all modules can function simultaneously, allowing for the game to function smoothly. 
 ### Valid input
 Sorted data from other modules should be inputted into the SerialOutputString function and sent over USART1 to utilise serial communication.
 ### Functions and modularity
@@ -55,15 +58,29 @@ Sorted data from other modules should be inputted into the SerialOutputString fu
 
 ## Servo Module
 ### Summary
+The servo module is designed for simple integration, where the user can input a value from 0 to 1, where 0 is the minimum allowable angular displacement and 1 is the maximum allowable position for the servo. Each servo is described inside a struct that contains the responsible hardware timer, channel and the maximum and minimum permissible PWM values. It also contains parameters that relate to velocity control functions. 
+
+The servo module also contains a PID controller for velocity, which uses the PWM signal period to adjust the servo velocity and the on-board gyroscope to check the actual rotational velocity. The target (requested) velocity can be adjusted at any time using the setTargetVelocity function. This value is check at a regular interval by the PID controller, which will adjust the PWM period until it reaches an acceptable error range. 
 
 ### Usage
+The servo module will be linked to the joystick module. The joystick module will request a value from 0 to 1 in the x and y axes and the servos will go to this position. 
+
+One could also configure the joystick to control the rotational velocity of the board by adjusting the target velocity values, and the velocity control module will adjust the PWM period as required. 
 
 ### Valid input
+A positional value from 0 to 1 can be requested. 
 
 ### Functions and modularity
+#### Positional Control 
+servoGoToFractionalPosition: will go to the requested fraction of its positional range. 
+setServoPWM: sets the requested PWM value. 
+
+#### Velocity Control 
+initPIDController: initialises the PID controller for the servo 
+setTargetVelocity: sets the target rotational velocity of the servo.
+servoGoToFractionalVelocity: make the servo go at a fraction of the allowable range. 
 
 ### Testing
-
 
 ## LDR Module 
 ### Summary
