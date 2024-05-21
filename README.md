@@ -77,12 +77,12 @@ Sorted data from other modules should be inputted into the SerialOutputString fu
 ### Testing
 
 
-## GUI Timer Module 
+## GUI Module 
 ![maze](https://github.com/BJRitchie/MTRX2700_A3/assets/160685205/1296d150-01d7-41fa-b2f5-6e0b3bebf2db)
 ### Summary
 The GUI is generated using python code to display a timer when the game starts, and employs a leaderboard to track the quickest times. 
 ### Usage
-
+The GUI module aims to replicate the quality features of a real arcade game. This module is essential in transforming the design from a casual design into a competitive game with various interactive and engaging features. Implementing a timer with an associated leaderboard, music and checkpoint indicators changes the games usage to being a quantifiable race.  
 ### Valid input
 The GUI code must be run on a valid python coding platform that has the capability to generate a GUI pop-up application (such as VSCode).
 ### Functions and modularity
@@ -96,11 +96,9 @@ The python module "time" is imported to run the count.
 #### Soundtrack
 The python module "pygame" is installed onto the device and imported into the code to play music.
 
-
-
 ### Testing
-
-
+- When inputting a name, the word length cannot exceed 20 characters. If it does exceed 20 characters, a warning message is displayed which requests a shorter username.
+- A manual message can be sent over serial from the STM32F3Discovery board using the SerialOutputString function instead of using the LDR module to test the functionality of the checkpoints, soundtrack and sound effects, post-game username request and leaderboard. This is useful for when the LDR module is not available for use.
 
 
 
