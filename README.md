@@ -9,20 +9,20 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 - Will Ridley-Smith (SID)
 
 ## Roles & Responsibilities
-## Will Ridley-Smith
+### Will Ridley-Smith
 - Joystick Module
 - 3D printing
 
-## Luca Agius
+### Luca Agius
 - LDR, GUI, and Serial Modules
 - Documentation lead
 
-## Sebastian O'Connell:
+### Sebastian O'Connell:
 - LDR, GUI, and Serial Modules
 - Minutes documentation
 - Presentation slides
 
-## Ben Ritchie:
+### Ben Ritchie:
 - Servo Module
 - Minutes documentation
 
