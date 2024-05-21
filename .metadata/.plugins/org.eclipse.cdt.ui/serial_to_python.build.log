@@ -1,0 +1,10 @@
+14:54:17 **** Incremental Build of configuration Debug for project serial_to_python ****
+make -j20 all 
+arm-none-eabi-size  serial_to_python.elf 
+   text	   data	    bss	    dec	    hex	filename
+   8612	    440	   1920	  10972	   2adc	serial_to_python.elf
+Finished building: default.size.stdout
+ 
+
+14:54:17 Build Finished. 0 errors, 0 warnings. (took 321ms)
+

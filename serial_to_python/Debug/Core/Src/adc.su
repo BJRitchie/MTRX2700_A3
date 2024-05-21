@@ -1,0 +1,16 @@
+../Core/Inc/core_cm4.h:1688:22:__NVIC_EnableIRQ	16	static
+../Core/Inc/core_cm4.h:1816:22:__NVIC_SetPriority	16	static
+../Core/Src/adc.c:104:10:ReadADC	16	static
+../Core/Src/adc.c:119:6:ContinuousReadSingleChannel	24	static
+../Core/Src/adc.c:184:6:ContinuousReadSingleChannelADC2	24	static
+../Core/Src/adc.c:244:6:ContinuousReadSingleChannelADC3	24	static
+../Core/Src/adc.c:307:6:SingleReadMultiChannelADC	24	static
+../Core/Src/adc.c:395:6:SingleReadMultiChannelADC1	24	static
+../Core/Src/adc.c:496:6:SingleReadMultiChannelADC2	24	static
+../Core/Src/adc.c:617:6:enable_ADC12_interrupt	8	static,ignoring_inline_asm
+../Core/Src/adc.c:624:6:enable_ADC3_interrupt	8	static,ignoring_inline_asm
+../Core/Src/adc.c:631:6:toggle_EOC_interrupt	16	static
+../Core/Src/adc.c:635:6:toggle_ADRDY_interrupt	16	static
+../Core/Src/adc.c:639:6:toggle_EOS_interrupt	16	static
+../Core/Src/adc.c:644:6:ADCInitialise	16	static
+../Core/Src/adc.c:678:6:SingleReadMultiChannelADCInterrupt	24	static

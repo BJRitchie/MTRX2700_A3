@@ -1,0 +1,36 @@
+!SESSION 2024-05-20 14:36:47.945 -----------------------------------------------
+eclipse.buildId=Version 1.15.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_AU
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2024-05-20 14:37:04.866
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-05-20 14:37:04.867
+!MESSAGE Log4j2 initialized with config file C:\Users\benri\OneDrive\Documents\MTRX2700\MTRX2700_A3\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-05-20 14:37:07.158
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-05-20 14:37:51.863
+!MESSAGE Indexed 'joystick_test' (30 sources, 126 headers) in 3.15 sec: 12,764 declarations; 77,562 references; 2 unresolved inclusions; 43 syntax errors; 147 unresolved names (0.16%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-05-20 14:37:52.323
+!MESSAGE Indexed 'Joystick Module' (5 sources, 66 headers) in 0.45 sec: 3,280 declarations; 5,610 references; 0 unresolved inclusions; 3 syntax errors; 2 unresolved names (0.022%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-05-20 14:37:54.293
+!MESSAGE Indexed 'servo_control' (31 sources, 129 headers) in 1.95 sec: 13,637 declarations; 83,663 references; 2 unresolved inclusions; 42 syntax errors; 147 unresolved names (0.15%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-05-20 14:39:16.714
+!MESSAGE Indexed 'serial_to_python' (26 sources, 87 headers) in 1.41 sec: 5,997 declarations; 38,739 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0045%)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.launch 2 0 2024-05-20 14:41:37.376
+!MESSAGE Won't launch debug session since we failed to locate the binary.
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.launch 2 0 2024-05-20 14:42:15.339
+!MESSAGE Won't launch debug session since we failed to locate the binary.
+
+!ENTRY com.st.stm32cube.ide.mcu.debug.launch 2 0 2024-05-20 14:42:57.585
+!MESSAGE Won't launch debug session since we failed to locate the binary.

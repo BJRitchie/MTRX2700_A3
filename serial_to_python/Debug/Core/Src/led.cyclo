@@ -1,0 +1,5 @@
+../Core/Src/led.c:6:6:chase_led	3
+../Core/Src/led.c:23:6:led_on	2
+../Core/Src/led.c:30:6:led_off	1
+../Core/Src/led.c:36:6:chase_led_changing_period	3
+../Core/Src/led.c:54:6:spin_leds	3
