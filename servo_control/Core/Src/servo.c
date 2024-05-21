@@ -144,6 +144,28 @@ void setServoPWM(Servo *servo, uint32_t pwm){
 	}
 }
 
+void servoGoToFractionalVelocity(Servo *servo, float frac) {
+	// check fractional input 
+	if (frac < 0) {
+		frac = 0.; 
+	}
+	else if (frac > 1) {
+		frac = 1.; 
+	}
+	
+	uint32_t max_arr = servo->max_arr; 
+	uint32_t min_arr = servo->min_arr; 
+	float slope = (float)max_arr - (float)min_arr;
+
+	// map to arr range
+	uint32_t arr = min + slope*frac;
+
+	// check the counter 
+	if (servo->TIMx->CNT > arr) {
+		TIM2->CNT = 0; // reset counter
+	}
+	servo->TIMx->ARR = arr; // set the arr value 
+}
 
 
 
@@ -162,8 +184,8 @@ float average(float arr[], uint32_t size) {
 	return (float)(sum/size);
 }
 
-
 void shift_array(float arr[], uint32_t size, float new_arr[], float new_value) {
+	// shift up one and insert new value 
 	new_arr[0] = new_value;
 
     for (size_t i = 1; i < (size); i++) {
@@ -171,23 +193,20 @@ void shift_array(float arr[], uint32_t size, float new_arr[], float new_value) {
     }
 }
 
+void setPIDController(Servo *servo, void (*PIDControllerFunction)()) {
+	servo->PIDController = PIDControllerFunction; 	// set pid controller func in servo struct 
+	setCompletionFunc(servo->TIMx_init, PIDControllerFunction); // set as timer completion func 
+}
 
-
-void servoInit(Servo *servo, void (*PIDControllerFunction)()){
+void initPIDController(Servo *servo, void (*PIDControllerFunction)()) {
+	enable_timer_interrupt(); // enable the interrupts 
+	BSP_GYRO_Init(); // enable gyro
 
 	// set the controller function 
 	setPIDController(servo, PIDControllerFunction);
 
-	// set the controller 
-	initPIDController(servo); 
-}
-
-void setPIDController(Servo *servo, void (*PIDControllerFunction)()) {
 	servo->PIDController = PIDControllerFunction;
 	setCompletionFunc(servo->TIMx_init, PIDControllerFunction);
-}
-
-void initPIDController(Servo *servo){
 
 	// initialise a timer to call repeated checks
 	// PID is the callback function
@@ -196,11 +215,6 @@ void initPIDController(Servo *servo){
 	// set the period between checks
 	setPrescaleValue(servo->TIMx_init, 47);
 	setARRValue(servo->TIMx_init, servo->loop_time);
-}
-
-void setPIDLoopTime(Servo* servo, uint32_t loops) {
-	servo->loop_time = loops;
-	setARRValue(servo->TIMx_init, loops);
 }
 
 void setServoTarget(Servo *servo, uint32_t target){
@@ -213,7 +227,7 @@ void setTargetVelocity(Servo *servo, float target_vel){
 
 
 
-uint32_t pid_velocity_controller_inner(Servo* servo) {
+float pid_velocity_controller_inner(Servo* servo) {
 	// unpack PID variables
 	float Kp = servo->Kp;
 	float Ti = servo->Ti;
@@ -229,25 +243,14 @@ uint32_t pid_velocity_controller_inner(Servo* servo) {
 	float I = (1/Ti) * error_sum;
 	float D = Td * (error - error_last);
 
-	float arr_avg = (float)(servo->max_arr + servo->min_arr)/2;
-	uint32_t arr = arr_avg - Kp * (P + I + D); // faster when lower
+	// apply PID equation 
+	float arr_frac = Kp * (P + I + D); 
 
 	// update PID values
 	servo->error_last = error;
 	servo->error_sum = error_sum;
 
-	if ( arr > servo->max_arr ) {
-		arr = servo->max_arr;
-	}
-	else if (arr < servo->min_arr) {
-		arr = servo->min_arr;
-	}
-
-	if ((GPIOA->IDR & 0x01) == 1) {
-		return arr;
-	}
-
-	return arr;
+	return arr_frac;
 }
 
 void update_position_values(Servo* servo, uint32_t axis) {
@@ -298,7 +301,7 @@ void update_velocity_values(Servo* servo, uint32_t axis) {
 	servo->position[1] = new_position[1];
 	servo->position[2] = new_position[2];
 
-}
+} 
 
 void PIDVelocityController1() {
 	// PID controller for the velocity of servo 1
@@ -306,13 +309,10 @@ void PIDVelocityController1() {
 	// update the current velocity
 	update_velocity_values(&Servo1, X_AXIS);
 
-	// calculate the ARR value
-	uint32_t arr = pid_velocity_controller_inner(&Servo1);
-	Servo1.TIMx->ARR = arr;
-
-	if (TIM2->CNT > arr) {
-		TIM2->CNT = 0; // reset counter
-	}
+	// calculate the ARR fraction
+	float arr_frac = pid_velocity_controller_inner(&Servo1);
+	// set the velocity 
+	servoGoToFractionalVelocity(&Servo1, arr_frac); 
 
 	if (Servo1.target_velocity < 0) {
 		// pwm value to the minimum
