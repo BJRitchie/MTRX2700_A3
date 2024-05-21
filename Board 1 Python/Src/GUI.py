@@ -10,7 +10,7 @@ from PIL import Image, ImageTk
 SERIAL_PORT = 'COM5'
 BAUD_RATE = 115200
 
-# Initialize pygame mixer
+# Initialise pygame mixer
 pygame.mixer.init()
 
 # Creating the timer application pop-up GUI
@@ -69,7 +69,7 @@ class TimerApp:
         self.serial_thread.daemon = True
         self.serial_thread.start()
     
-    # Function to start the GUI timer
+    # Function to start the GUI timer and sound
     def start_timer(self):
         self.start_time = time.time()
         self.running = True
@@ -78,7 +78,7 @@ class TimerApp:
         pygame.mixer.music.load("Gusty_Garden.mp3")
         pygame.mixer.music.play(-1)  # Play the music in a loop
 
-    # Function to stop the GUI timer
+    # Function to stop the GUI timer and sound
     def stop_timer(self):
         self.running = False
         end_time = time.time() - self.start_time
@@ -94,17 +94,14 @@ class TimerApp:
             self.timer_label.config(text=f"{elapsed_time:.1f}")
             self.root.after(100, self.update_timer)
 
-    # Function to ask for the users name after the game is complete to be added to the leaderboard submission
+    # Function to ask for the users name after the game is complete to be aded to the leaderboard submission
     def prompt_for_name(self, time):
         def submit_name():
             name = name_entry.get()
-            if len(name) > 20:
-                error_label.config(text="Name must be 20 characters or less")
-            else:
-                self.leaderboard_entries.append((time, name))
-                self.leaderboard_entries.sort()
-                self.update_leaderboard()
-                name_window.destroy()
+            self.leaderboard_entries.append((time, name))
+            self.leaderboard_entries.sort()
+            self.update_leaderboard()
+            name_window.destroy()
 
         name_window = tk.Toplevel(self.root)
         name_window.title("Enter Your Name")
@@ -113,8 +110,6 @@ class TimerApp:
         name_entry.pack(pady=10)
         submit_button = tk.Button(name_window, text="Submit", command=submit_name)
         submit_button.pack(pady=10)
-        error_label = tk.Label(name_window, text="", fg="red")
-        error_label.pack(pady=5)
 
     # Updates the leaderboard when the name is inputted
     def update_leaderboard(self):
@@ -155,7 +150,7 @@ class TimerApp:
                 
                 self.previous_values = values[1:4]
 
-# Main function to run the GUI 
+# Main function to run the GUI
 if __name__ == "__main__":
     root = tk.Tk()
     app = TimerApp(root)
