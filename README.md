@@ -33,9 +33,9 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 ![Screenshot 2024-05-21 224016](https://github.com/BJRitchie/MTRX2700_A3/assets/160685205/e022e7b6-28d3-48c4-a185-cbb22f996c5b)
 ## Serial Communication Module
 ### Summary
-Serial communication is the foundation of all the modules, allowing the modules to communicate with one another to achieve modularisation in the maze game. 
+Serial communication facilitates the transmission of data between modules to ensure they work together correctly.
 ### Usage
-The serial module is used to transmit relevant data such that the modules work together correctly. The LDR and GUI modules rely on packets sent over serial to communicate and ultimately carry out a usuable function. Using an interrupt based approach, the modules can function simultaneously, allowing for the game to function smoothly. 
+The LDR and GUI modules rely on packets sent over serial to communicate and ultimately carry out a usuable function. Using an interrupt based approach, the modules can function simultaneously, allowing for the game to function smoothly. 
 ### Valid input
 Sorted data can be inputted into the SerialOutputString function and sent over USART1 to the PC to utilise serial communication.
 ### Functions and modularity
