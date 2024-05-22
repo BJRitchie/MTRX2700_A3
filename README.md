@@ -39,11 +39,11 @@ The LDR and GUI modules rely on packets sent over serial to communicate and ulti
 ### Valid input
 Sorted data can be inputted into the SerialOutputString function and sent over USART1 to the PC to utilise serial communication.
 ### Functions and modularity
-#### SerialOutputString
-The SerialOutputString function is the most essential function in the serial communicaion process. It is used to output a specific string over the serial port using a pre-determined baud rate. The baud rate must match that at the receiving end.
-
+#### Transmission
+SerialOutputString: This function is the most essential function in the serial communicaion process. It is used to output a specific string over the serial port using a pre-determined baud rate. The baud rate must match that at the receiving end.
+SerialInitialise: Initialises the serial port and specified baud rate
 ### Testing
-
+Messages can manually be sent over the serial port using the SerialOutputBuffer. To confirm that these messages are being sent/received, a terminal such as the PuTTY terminal can be used. The PuTTY terminal should be given the correct COM line to read from, and the appropriate baud rate. When a message is written into the SerialOutputBuffer and the code is run, the PuTTY terminal should receive the string. 
 
 ## Joystick Module
 ### Summary
