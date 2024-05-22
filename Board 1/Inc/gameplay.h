@@ -25,13 +25,19 @@ void EXTI0_IRQHandler(void);
 //Enables the EXTI0 interrupt
 void EnableEXTIInterrupt();
 
-//
+//function called upon timer 2 overflow event
 void Timer2CompletionFunction();
 
+//function called upon timer 4 overflow event
+void Timer4CompletionFunction();
+
+//Initialising code to run phase 1, the pre-game phase of the game
 void Phase1();
 
+//Initialising code to run phase 2, the playing game phase of the game
 void Phase2();
 
+//Struct containing all necessary game configuration data/settings
 struct _GameData {
 	volatile uint8_t StartValue; //How many seconds we need to hold before game starts
 	volatile uint8_t StartCounter; //The timer x ADC3 start counter
@@ -47,6 +53,7 @@ struct _GameData {
 
 typedef struct _GameData GameData;
 
+//Game data structs
 extern GameData game_data1;
 
 //Spins leds and counts them up to start the game, or not
