@@ -5,8 +5,8 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 ## Group Members
 - Sebastian O'Connell (520443826)
 - Ben Ritchie (520479733)
-- Luca Agius (SID)
-- Will Ridley-Smith (SID)
+- Luca Agius (520510715)
+- Will Ridley-Smith (520466021)
 
 ## Roles & Responsibilities
 ### Will Ridley-Smith
