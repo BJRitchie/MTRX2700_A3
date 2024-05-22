@@ -39,7 +39,8 @@ The LDR and GUI modules rely on packets sent over serial to communicate and ulti
 ### Valid input
 Sorted data can be inputted into the SerialOutputString function and sent over USART1 to the PC to utilise serial communication.
 ### Functions and modularity
-
+#### SerialOutputString
+The SerialOutputString function is the most essential function in the serial communicaion process. It is used to output a specific string over the serial port using a pre-determined baud rate. The baud rate must match that at the receiving end.
 
 ### Testing
 
