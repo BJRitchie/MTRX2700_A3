@@ -26,14 +26,11 @@ void shift_array(float arr[], uint32_t size, float new_arr[], float new_value);
 // - frac: the fraction of the servos range to go to (0 to 1)
 void servoGoToFractionalPosition(Servo *servo, float frac);
 
-// sets servo positional target
+// make a servo go at a fraction of its maximum velocity (0 to 1)
 // input:
 // - Servo*: address of the servo struct being used
-// - PIDControllerFunction: a pointer to the PID controller function
-void servoInit(Servo *servo, void (*PIDControllerFunction)());
-
-// set the loop time
-void setPIDLoopTime(Servo* servo, uint32_t loops);
+// - frac: the fraction of the maximum velocity the servo should move at
+void servoGoToFractionalVelocity(Servo *servo, float frac);
 
 // sets the PID controller function
 // input:
@@ -45,7 +42,8 @@ void setPIDController(Servo *servo, void (*PIDControllerFunction)());
 // Note: ensure that the PIDController function is set in the servo struct
 // Input:
 // - Servo*: address of the servo struct being used
-void initPIDController(Servo *servo);
+// - PIDControllerFunction: a pointer to the PID controller function
+void initPIDController(Servo *servo, void (*PIDControllerFunction)());
 
 // sets servo positional target
 // input:
@@ -70,7 +68,7 @@ void setServoPWM(Servo *servo, uint32_t pwm);
 // - Servo*: address of the servo struct being used
 // Output:
 // - arr: the auto-reload register suggested by the controller
-uint32_t pid_velocity_controller_inner(Servo* servo);
+float pid_velocity_controller_inner(Servo* servo);
 
 // the maths of the pid controller
 // input:
