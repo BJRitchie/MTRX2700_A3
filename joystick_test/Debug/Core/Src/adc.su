@@ -1,8 +1,5 @@
-../Core/Src/adc.c:35:6:enable_clocks	4	static
-../Core/Src/adc.c:40:6:initialise_board	16	static
-../Core/Src/adc.c:48:10:ReadADC	16	static
-../Core/Src/adc.c:63:6:finished_transmission	16	static
-../Core/Src/adc.c:73:6:SingleReadMultiChannelADC	24	static
-../Core/Src/adc.c:188:6:ContinuousReadSingleChannelADC	24	static
-../Core/Src/adc.c:284:5:setup_adc	8	static
-../Core/Src/adc.c:291:6:sendToServos	24	static
+../Core/Src/adc.c:38:10:ReadADC	16	static
+../Core/Src/adc.c:52:6:InitialiseADC	4	static
+../Core/Src/adc.c:117:6:get_joystick_values	24	static
+../Core/Src/adc.c:139:6:joystickToServos	32	static
+../Core/Src/adc.c:164:6:run	16	static

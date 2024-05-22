@@ -45,7 +45,7 @@ extern ADCxPort ADC3_Port;
 
 void sendToServos();
 
-setup_adc(void);
+void run();
 
 uint16_t ReadADC(uint32_t channel);
 

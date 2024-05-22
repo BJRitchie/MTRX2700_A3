@@ -119,7 +119,7 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 
   // init the adc module
-  setup_adc();
+  run();
 
   /* USER CODE END 2 */
 
