@@ -93,16 +93,25 @@ servoGoToFractionalVelocity: make the servo go at a fraction of the allowable ra
 
 ### Testing
 
-## LDR Module 
+## LDR/Gameplay Module 
 ### Summary
+There are 4 LDRs used in the game that are setup to work with the ADC ports. There is one LDR which is used as the starting point of the game, and when this LDR is blocked for three seconds, the game begins. Hardware timers are used to time the game, one timer counts every seconds and another timer counts every 100th of a second. Once the game is being played, the fast-acting timer checks to see whether any of the other three LDRs have been blocked. If all three have been blocked once, then the game is finished.
 
 ### Usage
+The LDR module features the resistive sensors required for this assignment and it they are used inside the maze. This module is essentially the module where the game is run and the game settings are configured.
+The LDRs are powered off of the STM board but they are wired with resistors to ground. A wire connects the LDR output to a comparator which is compared to a tuned potentiometer. The inputs to the ADC ports are taken from the four outputs of the LM324 comparator
 
 ### Valid input
+Changing light levels incident on the LDR are valid for using this module. The best way to use this is to have a very bright light in contrast with a very dark light.
 
 ### Functions and modularity
+The ADC ports are used to check the readings from the LDRs and then interpreted using a scale value. This module only has a 2-value scale as it only cares if the LDR is on or off. The scale values are then stored in the ADC port which can be used in the main function. 
+The timer code is taken from the previous assignment but has a struct to initialise the timers and some other functions to configure the timers
+The gameplay code is a separate file and contains functions relating to how the game is played. This includes functions that call the ADC, interrupt, and timer initialisation functions from the other modular files. This part of the code has a struct called GameData which contains the game setting information and configuration, this can be changed to change the game settings slightly. It also contains a function called FlashEndLights which is called once all the LDRs/checkpoints have been passed and this flashes until the game is reset.
 
 ### Testing
+To test this module, the STM LEDs have been configured to visually debug the system. The LDRs are set to trigger 1 of 2 LEDs, an LED for off and an LED for on. If the LED changes when you block the LDR then the potentiometer, LDR, and code has been tuned effectively. 
+The LEDs are then also used to test whether the gameplay is working smoothly. During phase 1, the LEDs are set to only respond to the starting point LDR and will change when that LDR is blocked. Between game phase 1 and 2, three LEDs flash to inform the user that the game is about to begin. Then in the game playing phase, 2 LEDs are then set to respond to 1 LDR as describe earlier. Since there are 3 LDRs used in this phase, then 6 LEDs are used. When each LDR has been blocked once, you know the game is finished because the cool end light patterns will flash. To reset the game, hit the blue button and you will see all the LEDs flash and then the game will reset to phase 1. 
 
 
 ## GUI Module 
