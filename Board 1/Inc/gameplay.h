@@ -13,20 +13,31 @@ void enable_clocks();
 // initialise the discovery board I/O (just outputs: inputs are selected by default)
 void initialise_board();
 
+//ADC 1 and 2 interrupt handler
 void ADC1_2_IRQHandler();
 
+//ADC 3 interrupt handler
 void ADC3_IRQHandler();
 
+//EXTI0 interrupt handler
 void EXTI0_IRQHandler(void);
 
+//Enables the EXTI0 interrupt
 void EnableEXTIInterrupt();
 
+//function called upon timer 2 overflow event
 void Timer2CompletionFunction();
 
+//function called upon timer 4 overflow event
+void Timer4CompletionFunction();
+
+//Initialising code to run phase 1, the pre-game phase of the game
 void Phase1();
 
+//Initialising code to run phase 2, the playing game phase of the game
 void Phase2();
 
+//Struct containing all necessary game configuration data/settings
 struct _GameData {
 	volatile uint8_t StartValue; //How many seconds we need to hold before game starts
 	volatile uint8_t StartCounter; //The timer x ADC3 start counter
@@ -42,6 +53,7 @@ struct _GameData {
 
 typedef struct _GameData GameData;
 
+//Game data structs
 extern GameData game_data1;
 
 //Spins leds and counts them up to start the game, or not
