@@ -12,7 +12,7 @@ The a-MAZE-ing Race is a competitive maze game with the objective of reaching al
 ### Will Ridley-Smith
 - Joystick Module
 - Servo/Joystick integration 
-- 3D printing
+- 3D printing and assembly
 
 ### Luca Agius
 - LDR, GUI, and Serial Modules
@@ -47,14 +47,24 @@ The SerialOutputString function is the most essential function in the serial com
 
 ## Joystick Module
 ### Summary
+Potentiometers track the rotation of a joystick on 2 axis'. A voltage divider is used to track the values of the position of the potentiometer. This voltage signal is passed into an analog to digital converter to get the values. A range is found for the joystick and then the values are mapped so that each coordinate is a value from 0-1000.
 
 ### Usage
+To use the module, simply initialise the ADC with InitialiseADC() and use get_joystick_values() to get the current coordinates of the joystick. The values of the coordinates range from 0-1000. WHen the joystick is connected, x is 0 when all the way to the left and 1000 when all the way to the right. Y is 1000 when all the way forwards and 0 when all the way back. In this assignment, a loop continuously calls get_joystick_values() so that we are always checking the position of the joystick.
 
 ### Valid input
+A pointer to a valid struct joystick_coordinates should be passed into the get_joystick_values() function.
+Variable voltage should be connected to PA1 and PA5 and should have a max value of 3V.
 
 ### Functions and modularity
+InitialiseADC() runs all required setup for the ADC module.
+get_joystick_values() simply returns the current coordinates of the joystick.
+All functionality is encapsulated within these functions.
 
 ### Testing
+Connect inputs for the joystick module and initialise Serial. Use Serial Output to print the values from ADC to the terminal on a computer. Check that the y value varies when moving the joystick forward and backwards, and the x value varies when moving side to side.
+
+Print the mapped x and y values to the screen and check that at the furthest forward position, y is 1000, and the furthest backwards, y is 0. Also check that all the way to the right, x is 1000 and all the way to the left, x is 0.
 
 
 ## Servo Module
