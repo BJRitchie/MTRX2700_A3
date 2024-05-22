@@ -7,7 +7,7 @@ import pygame
 from PIL import Image, ImageTk
 
 # Define baud rate and the serial port number
-SERIAL_PORT = 'COM5'
+SERIAL_PORT = 'COM4'
 BAUD_RATE = 115200
 
 # Initialise pygame mixer
@@ -20,7 +20,7 @@ class TimerApp:
         self.root.title("The a-MAZE-ing Race!")
 
         # Set up the background image
-        self.background_image = Image.open("game-background.jpg")
+        self.background_image = Image.open("Board 1 Python\Inc\game-background.jpg")
         self.background_photo = ImageTk.PhotoImage(self.background_image)
         self.background_label = tk.Label(root, image=self.background_photo)
         self.background_label.place(relwidth=1, relheight=1)
@@ -75,7 +75,7 @@ class TimerApp:
         self.running = True
         self.update_timer()
         # Play music when the timer starts
-        pygame.mixer.music.load("Gusty_Garden.mp3")
+        pygame.mixer.music.load("Board 1 Python\Inc\Gusty_Garden.mp3")
         pygame.mixer.music.play(-1)  # Play the music in a loop
 
     # Function to stop the GUI timer and sound
@@ -85,7 +85,7 @@ class TimerApp:
         self.prompt_for_name(end_time)
         # Stop the music and play the completion sound
         pygame.mixer.music.stop()
-        pygame.mixer.Sound("mixkit-completion-of-a-level-2063.wav").play()
+        pygame.mixer.Sound("Board 1 Python\Inc\mixkit-completion-of-a-level-2063.wav").play()
 
     # Function to update the time display
     def update_timer(self):
@@ -146,7 +146,7 @@ class TimerApp:
                             self.checkpoint2_label.config(text="Checkpoint 2 reached")
                         elif i == 3:
                             self.checkpoint3_label.config(text="Checkpoint 3 reached")
-                        pygame.mixer.Sound("mixkit-arcade-video-game-bonus-2044.wav").play()
+                        pygame.mixer.Sound("Board 1 Python\Inc\mixkit-arcade-video-game-bonus-2044.wav").play()
                 
                 self.previous_values = values[1:4]
 
