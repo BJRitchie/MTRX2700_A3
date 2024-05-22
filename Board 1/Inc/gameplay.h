@@ -13,14 +13,19 @@ void enable_clocks();
 // initialise the discovery board I/O (just outputs: inputs are selected by default)
 void initialise_board();
 
+//ADC 1 and 2 interrupt handler
 void ADC1_2_IRQHandler();
 
+//ADC 3 interrupt handler
 void ADC3_IRQHandler();
 
+//EXTI0 interrupt handler
 void EXTI0_IRQHandler(void);
 
+//Enables the EXTI0 interrupt
 void EnableEXTIInterrupt();
 
+//
 void Timer2CompletionFunction();
 
 void Phase1();
